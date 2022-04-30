@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const validator=require('validator')
+const shortHash = require('short-hash');
+
 const Schema=mongoose.Schema
+
 const urlSchema=new Schema({
     title:{
         type:String,
@@ -20,7 +23,6 @@ const urlSchema=new Schema({
     },
     hashedUrl:{
         type:String,
-        required:true
     },
     createdAt:{
         type:Date,
@@ -28,5 +30,10 @@ const urlSchema=new Schema({
         default:Date.now
     }
 })
+urlSchema.pre('save', function(next){
+    this.hashedUrl=shortHash(this.originalUrl)
+    next()
+})
+
 const URL=mongoose.model('URL',urlSchema)
 module.exports=URL
