@@ -6,7 +6,9 @@ const UrlAddItem=(props)=>{
     const formSubmit=(formData,reset)=>{
         axios.post('/api/urls',formData)
         .then(res=>{
+          if(!res.data.hasOwnProperty('errors')){
             handleUrls(res.data,'ADD')
+          }
             reset()
         })
         .catch(err=>console.log(err))

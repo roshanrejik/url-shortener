@@ -7,7 +7,8 @@ const Schema=mongoose.Schema
 const urlSchema=new Schema({
     title:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     originalUrl:{
         type:String,
@@ -22,7 +23,7 @@ const urlSchema=new Schema({
         }
     },
     hashedUrl:{
-        type:String,
+        type:String
     },
     createdAt:{
         type:Date,
@@ -32,8 +33,8 @@ const urlSchema=new Schema({
 })
 urlSchema.pre('save', function(next){
     this.hashedUrl=shortHash(this.originalUrl)
+    console.log('after update');
     next()
 })
-
 const URL=mongoose.model('URL',urlSchema)
 module.exports=URL
